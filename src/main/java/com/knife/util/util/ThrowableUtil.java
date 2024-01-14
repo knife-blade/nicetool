@@ -1,4 +1,4 @@
-package com.knife.util;
+package com.knife.util.util;
 
 /**
  * 异常工具类
