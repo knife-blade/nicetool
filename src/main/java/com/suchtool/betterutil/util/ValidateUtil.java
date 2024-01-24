@@ -1,4 +1,4 @@
-package com.knife.util.util;
+package com.suchtool.betterutil.util;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

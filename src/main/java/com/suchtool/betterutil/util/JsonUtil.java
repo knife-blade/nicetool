@@ -1,4 +1,4 @@
-package com.knife.util.util;
+package com.suchtool.betterutil.util;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;

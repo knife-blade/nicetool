@@ -1,4 +1,4 @@
-package com.knife.util.constant;
+package com.suchtool.betterutil.constant;
 
 import org.springframework.util.AntPathMatcher;
 
