@@ -1,7 +1,7 @@
-package com.knife.util.util;
+package com.suchtool.betterutil.util;
 
 
-import com.knife.util.constant.DateTimeFormatConstant;
+import com.suchtool.betterutil.constant.DateTimeFormatConstant;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
