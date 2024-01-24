@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.knife</groupId>
+    <groupId>com.suchtool</groupId>
     <artifactId>better-util</artifactId>
     <version>0.0.1</version>
 
