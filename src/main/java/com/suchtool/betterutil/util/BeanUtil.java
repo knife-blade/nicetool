@@ -1,4 +1,4 @@
-package com.knife.util.util;
+package com.suchtool.betterutil.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.BeanUtils;

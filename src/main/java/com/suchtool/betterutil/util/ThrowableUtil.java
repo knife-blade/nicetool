@@ -1,4 +1,4 @@
-package com.knife.util.util;
+package com.suchtool.betterutil.util;
 
 /**
  * 异常工具类

@@ -1,4 +1,4 @@
-package com.knife.util.constant;
+package com.suchtool.betterutil.constant;
  
 public interface DateTimeFormatConstant {
     String DATE_TIME_FORMAT_NORMAL = "yyyy-MM-dd HH:mm:ss";

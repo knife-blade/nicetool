@@ -1,4 +1,4 @@
-package com.knife.util.util;
+package com.suchtool.betterutil.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
