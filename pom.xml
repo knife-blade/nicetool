@@ -8,8 +8,8 @@
     <version>0.0.1</version>
 
     <packaging>jar</packaging>
-    <name>better-util</name>
-    <description>better-util</description>
+    <name>better-util-spring-boot-starter</name>
+    <description>better util for java</description>
 
     <url>https://github.com/knife-blade/better-util</url>
 
