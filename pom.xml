@@ -11,6 +11,8 @@
     <name>better-util</name>
     <description>better-util</description>
 
+    <url>https://github.com/knife-blade/better-util</url>
+
     <!--用于发布：开源协议...-->
     <licenses>
         <license>
@@ -35,7 +37,6 @@
                 <role>Developer</role>
             </roles>
             <timezone>+8</timezone>
-            <url>https://github.com/knife-blade/better-util</url>
         </developer>
     </developers>
 
