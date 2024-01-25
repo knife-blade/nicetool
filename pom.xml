@@ -18,7 +18,7 @@
     <name>better-util</name>
     <description>better-util</description>
 
-    <!--开源协议...-->
+    <!--用于发布：开源协议...-->
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -26,13 +26,13 @@
         </license>
     </licenses>
 
-    <!--项目链接-->
+    <!--用于发布：项目链接-->
     <scm>
         <url>https://github.com/knife-blade/better-util</url>
         <connection>https://github.com/knife-blade/better-util.git</connection>
     </scm>
 
-    <!--开发者信息-->
+    <!--用于发布：开发者信息-->
     <developers>
         <developer>
             <id>knifeout</id>
@@ -78,6 +78,7 @@
 
     </dependencies>
 
+    <!--用于发布：插件和仓库等信息-->
     <profiles>
         <profile>
             <id>ossrh</id>
