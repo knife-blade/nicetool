@@ -17,6 +17,10 @@ import java.util.List;
 public class BeanUtil {
     /**
      * 浅拷贝
+     * @param source 源对象
+     * @param target 目标对象对应的类
+     * @return 目标对象
+     * @param <T> 目标对象泛型
      */
     public static <T> T copy(Object source, Class<T> target) {
         if (source == null) {
@@ -34,6 +38,10 @@ public class BeanUtil {
 
     /**
      * 浅拷贝
+     * @param sources 源对象列表
+     * @param target 目标对象对应的类
+     * @return 目标对象
+     * @param <T> 目标对象泛型
      */
     public static <T> List<T> copy(List<?> sources, Class<T> target) {
         if (CollectionUtils.isEmpty(sources)) {
@@ -54,25 +62,33 @@ public class BeanUtil {
     }
 
     /**
-     * 深拷贝
+     * 浅拷贝
+     * @param source 源对象
+     * @param target 目标对象对应的类
+     * @return 目标对象
+     * @param <T> 目标对象泛型
      */
     public static <T> T deepCopy(Object source, Class<T> target) {
         if (source == null) {
             return null;
         }
-        String json = JsonUtil.toJson(source);
+        String json = JsonUtil.toJsonString(source);
         return JsonUtil.toObject(json, target);
     }
 
     /**
-     * 深拷贝
-     * 此处第二个参数必须用TypeReference，如果用Class<T> 会导致泛型擦除，最后返回的是个List<LinedHashMap>
+     * 浅拷贝
+     * （此处第二个参数必须用TypeReference，如果用Class<T> 会导致泛型擦除，最后返回的是个List<LinedHashMap>）
+     * @param sources 源对象列表
+     * @param typeReference 目标对象对应的类型
+     * @return 目标对象
+     * @param <T> 目标对象泛型
      */
     public static <T> List<T> deepCopy(List<?> sources, TypeReference<List<T>> typeReference) {
         if (CollectionUtils.isEmpty(sources)) {
             return new ArrayList<>();
         }
-        String json = JsonUtil.toJson(sources);
+        String json = JsonUtil.toJsonString(sources);
         return JsonUtil.toObjectList(json, typeReference);
     }
 
@@ -105,6 +121,8 @@ public class BeanUtil {
 
     /**
      * 判断是否所有字段都是null
+     * @param o 对象
+     * @return 所有的对象都是null
      */
     public static boolean allFieldAreNull(Object o) {
         Class<?> aClass = o.getClass();
