@@ -13,9 +13,11 @@ import java.util.Set;
 public class PropertyUtil {
     /**
      * 获得值为null的属性名
+     * @param obj 对象
+     * @return 属性名字符串数组
      */
-    public static String[] getNullPropertyNames(Object source) {
-        BeanWrapper src = new BeanWrapperImpl(source);
+    public static String[] getNullPropertyNames(Object obj) {
+        BeanWrapper src = new BeanWrapperImpl(obj);
         PropertyDescriptor[] pds = src.getPropertyDescriptors();
  
         Set<String> emptyNames = new HashSet<>();
