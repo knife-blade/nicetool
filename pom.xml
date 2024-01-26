@@ -5,7 +5,7 @@
 
     <groupId>com.suchtool</groupId>
     <artifactId>better-util-spring-boot-starter</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
 
     <packaging>jar</packaging>
     <name>better-util-spring-boot-starter</name>

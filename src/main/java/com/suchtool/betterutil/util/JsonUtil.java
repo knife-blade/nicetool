@@ -36,40 +36,71 @@ public class JsonUtil {
         return objectMapper;
     }
 
-    public static <T> T toObject(String string, Class<T> cls) {
+    /**
+     * 字符串转为对象
+     * @param jsonString JSON字符串
+     * @param cls 对象对应的类
+     * @return 对象
+     * @param <T> 对象的类型
+     */
+    public static <T> T toObject(String jsonString, Class<T> cls) {
         try {
-            return objectMapper.readValue(string, cls);
+            return objectMapper.readValue(jsonString, cls);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static <T> T toObject(String str, TypeReference<T> valueTypeRef) {
+    /**
+     * 字符串转为对象
+     * @param jsonString JSON字符串
+     * @param typeReference 对象对应的类型
+     * @return 对象
+     * @param <T> 对象的类型
+     */
+    public static <T> T toObject(String jsonString, TypeReference<T> typeReference) {
         try {
-            return objectMapper.readValue(str, valueTypeRef);
+            return objectMapper.readValue(jsonString, typeReference);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static <T> T toObject(String str, JavaType javaType) {
+    /**
+     * 字符串转为对象
+     * @param jsonString JSON字符串
+     * @param javaType 对象对应的类型
+     * @return 对象
+     * @param <T> 对象的类型
+     */
+    public static <T> T toObject(String jsonString, JavaType javaType) {
         try {
-            return objectMapper.readValue(str, javaType);
+            return objectMapper.readValue(jsonString, javaType);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * 字符串转为Map
+     * @param jsonString json字符串
+     * @return map
+     */
     @SuppressWarnings("rawtypes")
-    public static Map toMap(String str) {
+    public static Map toMap(String jsonString) {
         try {
-            return objectMapper.readValue(str, Map.class);
+            return objectMapper.readValue(jsonString, Map.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static String toJson(Object obj) {
+    /**
+     * 对象转为JSON字符串
+     * @param obj 对象
+     * @return JSON字符串
+     */
+    public static String toJsonString(Object obj) {
         try {
             return objectMapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
@@ -77,17 +108,29 @@ public class JsonUtil {
         }
     }
 
-    public static <T> List<T> toObjectList(String string, TypeReference<List<T>> typeReference) {
+    /**
+     * 将JSON字符串转为对象列表
+     * @param jsonString JSON字符串
+     * @param typeReference 对象类型
+     * @return 对象列表
+     * @param <T> 对象泛型
+     */
+    public static <T> List<T> toObjectList(String jsonString, TypeReference<List<T>> typeReference) {
         try {
-            return objectMapper.readValue(string, typeReference);
+            return objectMapper.readValue(jsonString, typeReference);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static JsonNode toTree(String string) {
+    /**
+     * 将JSON字符串转为JsonNode
+     * @param jsonString JSON字符串
+     * @return JsonNode对象
+     */
+    public static JsonNode toJsonNode(String jsonString) {
         try {
-            return objectMapper.readTree(string);
+            return objectMapper.readTree(jsonString);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
