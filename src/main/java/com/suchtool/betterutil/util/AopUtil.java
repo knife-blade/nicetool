@@ -3,6 +3,11 @@ package com.suchtool.betterutil.util;
 import org.springframework.aop.framework.Advised;
 
 public class AopUtil {
+    /**
+     * 获得目标类
+     * @param bean bean类
+     * @return 目标类
+     */
     public static Class<?> getTargetClass(Object bean) {
         Class<?> targetCls = bean.getClass();
 
@@ -14,6 +19,11 @@ public class AopUtil {
         return targetCls;
     }
 
+    /**
+     * 获得代理的bean
+     * @param bean 目标bean
+     * @return 代理bean
+     */
     public static Object getTargetBean(Object bean) {
         Object targetBean = bean;
         if (targetBean instanceof Advised) {
