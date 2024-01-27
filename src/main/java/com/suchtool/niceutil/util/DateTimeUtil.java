@@ -1,7 +1,7 @@
-package com.suchtool.betterutil.util;
+package com.suchtool.niceutil.util;
 
 
-import com.suchtool.betterutil.constant.DateTimeFormatConstant;
+import com.suchtool.niceutil.constant.DateTimeFormatConstant;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;

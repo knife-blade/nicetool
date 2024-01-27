@@ -1,4 +1,4 @@
-package com.suchtool.betterutil.util;
+package com.suchtool.niceutil.util;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
