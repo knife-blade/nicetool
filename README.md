@@ -1,4 +1,4 @@
-# better-util
+# nice-util
 
 ## 介绍
 Java工具类。
