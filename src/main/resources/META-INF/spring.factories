@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.suchtool.betterutil.configuration.BetterUtilConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.suchtool.niceutil.configuration.NiceUtilConfiguration
