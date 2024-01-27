@@ -1,4 +1,4 @@
-package com.suchtool.betterutil.util;
+package com.suchtool.niceutil.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.BeanUtils;
