@@ -16,7 +16,7 @@ import java.util.List;
 
 public class BeanUtil {
     /**
-     * 浅拷贝
+     * 对象浅拷贝
      * @param source 源对象
      * @param target 目标对象对应的类
      * @return 目标对象
@@ -37,7 +37,7 @@ public class BeanUtil {
     }
 
     /**
-     * 浅拷贝
+     * 对象浅拷贝
      * @param sources 源对象列表
      * @param target 目标对象对应的类
      * @return 目标对象
@@ -62,7 +62,7 @@ public class BeanUtil {
     }
 
     /**
-     * 浅拷贝
+     * 对象深拷贝
      * @param source 源对象
      * @param target 目标对象对应的类
      * @return 目标对象
@@ -77,7 +77,7 @@ public class BeanUtil {
     }
 
     /**
-     * 浅拷贝
+     * 对象深拷贝
      * （此处第二个参数必须用TypeReference，如果用Class<T> 会导致泛型擦除，最后返回的是个List<LinedHashMap>）
      * @param sources 源对象列表
      * @param typeReference 目标对象对应的类型
@@ -90,56 +90,5 @@ public class BeanUtil {
         }
         String json = JsonUtil.toJsonString(sources);
         return JsonUtil.toObjectList(json, typeReference);
-    }
-
-    /**
-     * 把对象中的 String 类型的null字段，转换为指定字符串，比如：空字符串
-     *
-     * @param <T> 待转化对象类型
-     * @param cls 待转化对象
-     * @param str 目标字符串
-     */
-    public static <T> void replaceNullString(T cls, String str) {
-        Field[] fields = cls.getClass().getDeclaredFields();
-        if (fields == null || fields.length == 0) {
-            return;
-        }
-        for (Field field : fields) {
-            if ("String".equals(field.getType().getSimpleName())) {
-                field.setAccessible(true);
-                try {
-                    String value = (String) field.get(cls);
-                    if (!StringUtils.hasText(value)) {
-                        field.set(cls, str);
-                    }
-                } catch (IllegalArgumentException | IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    /**
-     * 判断是否所有字段都是null
-     * @param o 对象
-     * @return 所有的对象都是null
-     */
-    public static boolean allFieldAreNull(Object o) {
-        Class<?> aClass = o.getClass();
-
-        PropertyDescriptor[] beanProperties = ReflectUtils.getBeanProperties(aClass);
-        for (PropertyDescriptor beanProperty : beanProperties) {
-            Method readMethod = beanProperty.getReadMethod();
-            try {
-                Object value = readMethod.invoke(o);
-                if (value != null) {
-                    return false;
-                }
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        return true;
     }
 }
