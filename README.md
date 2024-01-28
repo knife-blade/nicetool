@@ -24,7 +24,7 @@
 </dependency>
 ```
 ### 2.使用
-```java
+```
 String jsonString = JsonUtil.toJsonString(obj);
 ```
 
