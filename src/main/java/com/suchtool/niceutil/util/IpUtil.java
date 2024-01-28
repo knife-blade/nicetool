@@ -1,15 +1,33 @@
 package com.suchtool.niceutil.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 public class IpUtil {
+    /**
+     * 是否是本机IP
+     * @param ip IP地址
+     * @return 是否是本机IP
+     */
+    public static boolean isLocalIP(String ip) {
+        try {
+            InetAddress addr = InetAddress.getByName(ip);
+            return addr.isLoopbackAddress();
+        } catch (UnknownHostException e) {
+            return false;
+        }
+    }
+
     /**
      * 获取IP
      * @return 调用方的IP
@@ -20,8 +38,25 @@ public class IpUtil {
             return null;
         }
 
-        String remoteAddr = request.getRemoteAddr();
-        return parseMultistageReverseProxyIp(remoteAddr);
+        String ip = request.getRemoteAddr();
+
+        // 如果是本机请求（前者是IPV4的本机，后者是IPV6的本机）
+        // 则获取本机的IP
+        if (isLocalIP(ip)) {
+            // 根据网卡取本机配置的IP
+            InetAddress inet = null;
+            try {
+                inet = InetAddress.getLocalHost();
+            } catch (UnknownHostException e) {
+                log.error("无法获得localHost", e);
+            }
+
+            if (inet != null) {
+                ip = inet.getHostAddress();
+            }
+        }
+
+        return parseMultistageReverseProxyIp(ip);
     }
 
     /**
@@ -80,10 +115,12 @@ public class IpUtil {
         }
 
         String ip;
-        for (String header : headerNameList) {
-            ip = request.getHeader(header);
-            if (!isUnknown(ip)) {
-                return parseMultistageReverseProxyIp(ip);
+        if (!CollectionUtils.isEmpty(headerNameList)) {
+            for (String header : headerNameList) {
+                ip = request.getHeader(header);
+                if (!isUnknown(ip)) {
+                    return parseMultistageReverseProxyIp(ip);
+                }
             }
         }
 
