@@ -8,6 +8,34 @@ import java.util.List;
 
 public class HttpUtil {
     /**
+     * 拼接URL（自动添加或者去除首尾的/）
+     * @param fragments URL片段
+     * @return 拼接好的URL
+     */
+    public static String joinUrl(List<String> fragments) {
+        StringBuilder result = new StringBuilder();
+
+        for (String fragment : fragments) {
+            if (fragment == null || fragment.isEmpty()) {
+                continue;
+            }
+
+            if (result.length() > 0 && result.charAt(result.length() - 1) != '/') {
+                result.append('/');
+            }
+
+            if (fragment.charAt(0) == '/') {
+                fragment = fragment.substring(1);
+            }
+
+            result.append(fragment);
+        }
+
+        return result.toString();
+    }
+
+
+    /**
      * 通过对象构造带参数的URL
      * @param baseUrl url前缀
      * @param objectList 对象列表（用此注解指定字段名：{@link UrlParamProperty}）
