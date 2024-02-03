@@ -31,9 +31,14 @@ public class HttpUtil {
             result.append(fragment);
         }
 
-        return result.toString();
-    }
+        String url = result.toString();
+        if (!url.startsWith("http")
+                && !url.startsWith("https")) {
+            url = "http://" + url;
+        }
 
+        return url;
+    }
 
     /**
      * 通过对象构造带参数的URL
@@ -45,28 +50,39 @@ public class HttpUtil {
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(baseUrl);
 
         for (Object obj : objectList) {
-            Class<?> clazz = obj.getClass();
+            Class<?> cls = obj.getClass();
 
-            for (Field field : clazz.getDeclaredFields()) {
-                field.setAccessible(true);
-                try {
-                    String key = null;
-                    if (field.isAnnotationPresent(UrlParamProperty.class)) {
-                        key = field.getAnnotation(UrlParamProperty.class).value();
-                    } else {
-                        key = field.getName();
-                    }
-                    Object value = field.get(obj);
-                    if (value != null) {
-                        builder.queryParam(key, value);
-                    }
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-                field.setAccessible(false);
-            }
+            fillParam(cls, obj, builder);
         }
 
         return builder.toUriString();
+    }
+
+    private static void fillParam(Class<?> cls,
+                           Object obj,
+                           UriComponentsBuilder builder) {
+        for (Field field : cls.getDeclaredFields()) {
+            field.setAccessible(true);
+            try {
+                String key = null;
+                if (field.isAnnotationPresent(UrlParamProperty.class)) {
+                    key = field.getAnnotation(UrlParamProperty.class).value();
+                } else {
+                    key = field.getName();
+                }
+                Object value = field.get(obj);
+                if (value != null) {
+                    builder.queryParam(key, value);
+                }
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+            field.setAccessible(false);
+        }
+
+        Class<?> superclass = cls.getSuperclass();
+        if (!superclass.equals(Object.class)) {
+            fillParam(superclass, obj, builder);
+        }
     }
 }
