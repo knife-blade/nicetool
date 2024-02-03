@@ -1,4 +1,4 @@
-package com.suchtool.niceutil.util;
+package com.suchtool.niceutil.util.spring;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
