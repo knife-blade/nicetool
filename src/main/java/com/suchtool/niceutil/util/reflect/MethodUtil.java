@@ -1,4 +1,4 @@
-package com.suchtool.niceutil.util;
+package com.suchtool.niceutil.util.reflect;
 
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;

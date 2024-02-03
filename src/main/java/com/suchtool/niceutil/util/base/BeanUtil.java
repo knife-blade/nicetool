@@ -1,15 +1,9 @@
-package com.suchtool.niceutil.util;
+package com.suchtool.niceutil.util.base;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.BeanUtils;
-import org.springframework.cglib.core.ReflectUtils;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

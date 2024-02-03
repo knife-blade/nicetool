@@ -1,4 +1,4 @@
-package com.suchtool.niceutil.util;
+package com.suchtool.niceutil.util.base;
 
 /**
  * 异常工具类
