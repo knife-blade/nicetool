@@ -1,4 +1,4 @@
-package com.suchtool.niceutil.util;
+package com.suchtool.niceutil.util.web.ip;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;

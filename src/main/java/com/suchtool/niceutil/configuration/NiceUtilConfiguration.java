@@ -1,6 +1,6 @@
 package com.suchtool.niceutil.configuration;
 
-import com.suchtool.niceutil.util.ApplicationContextHolder;
+import com.suchtool.niceutil.util.spring.ApplicationContextHolder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
