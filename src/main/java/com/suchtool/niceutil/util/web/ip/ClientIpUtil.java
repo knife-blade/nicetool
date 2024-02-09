@@ -1,19 +1,24 @@
 package com.suchtool.niceutil.util.web.ip;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 @Slf4j
-public class IpUtil {
+public class ClientIpUtil {
     /**
      * 是否是本机IP
      * @param ip IP地址
@@ -32,13 +37,19 @@ public class IpUtil {
      * 获取IP
      * @return 调用方的IP
      */
-    public static String parseIP() {
-        HttpServletRequest request = getRequest();
-        if (request == null) {
-            return null;
+    public static String parseRemoteIP() {
+        boolean isHttpServletRequest = ClassUtils.isPresent(
+                "javax.servlet.http.HttpServletRequest", null);
+        if (isHttpServletRequest) {
+            HttpServletRequest request = getRequest();
+            return parseRemoteIp(request::getRemoteAddr);
         }
 
-        String ip = request.getRemoteAddr();
+        throw new RuntimeException("HttpServletRequest not exist");
+    }
+
+    private static String parseRemoteIp(Supplier<String> remoteIpSupplier) {
+        String ip = remoteIpSupplier.get();
 
         // 如果是本机请求（前者是IPV4的本机，后者是IPV6的本机）
         // 则获取本机的IP
@@ -76,7 +87,18 @@ public class IpUtil {
      * @return IP地址
      */
     public static String parseClientIP() {
-        return parseClientIPByHeader(null);
+        boolean isHttpServletRequest = ClassUtils.isPresent(
+                "javax.servlet.http.HttpServletRequest", null);
+        if (isHttpServletRequest) {
+            HttpServletRequest request = getRequest();
+            return parseClientIPByHeader(null, request::getHeader);
+        }
+
+        throw new RuntimeException("HttpServletRequest not exist");
+    }
+
+    public static String parseClientIP(Function<String, String> headValueSupplier) {
+        return parseClientIPByHeader(null, headValueSupplier);
     }
 
     /**
@@ -86,6 +108,17 @@ public class IpUtil {
      * @return IP地址
      */
     public static String parseClientIP(List<String> otherHeaderNameList) {
+        return parseClientIP(otherHeaderNameList, null);
+    }
+
+    /**
+     * 获取客户端IP
+     *
+     * @param otherHeaderNameList 其他自定义头文件，通常在Http服务器（例如Nginx）中配置
+     * @return IP地址
+     */
+    public static String parseClientIP(List<String> otherHeaderNameList,
+                                       Function<String, String> headValueSupplier) {
         List<String> headerList = Arrays.asList(
                 "X-Forwarded-For",
                 "X-Real-IP",
@@ -99,32 +132,28 @@ public class IpUtil {
             headerList.addAll(otherHeaderNameList);
         }
 
-        return parseClientIPByHeader(headerList);
+        return parseClientIPByHeader(headerList, headValueSupplier);
     }
 
     /**
      * 获取客户端IP
-     *
-     * @param headerNameList 其他自定义头文件，通常在Http服务器（例如Nginx）中配置
+     * @param headerNameList 其他自定义头，通常在Http服务器（例如Nginx）中配置
+     * @param headValueFunction 请求头值
      * @return IP地址
      */
-    public static String parseClientIPByHeader(List<String> headerNameList) {
-        HttpServletRequest request = getRequest();
-        if (request == null) {
-            return null;
-        }
-
+    private static String parseClientIPByHeader(List<String> headerNameList,
+                                                Function<String, String> headValueFunction) {
         String ip;
         if (!CollectionUtils.isEmpty(headerNameList)) {
             for (String header : headerNameList) {
-                ip = request.getHeader(header);
+                ip = headValueFunction.apply(header);
                 if (!isUnknown(ip)) {
                     return parseMultistageReverseProxyIp(ip);
                 }
             }
         }
 
-        ip = parseIP();
+        ip = parseRemoteIP();
         return parseMultistageReverseProxyIp(ip);
     }
 
@@ -152,7 +181,7 @@ public class IpUtil {
         ServletRequestAttributes servletRequestAttributes =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (servletRequestAttributes == null) {
-            return null;
+            throw new RuntimeException("ServletRequestAttributes is null");
         }
         return servletRequestAttributes.getRequest();
     }
@@ -163,7 +192,7 @@ public class IpUtil {
      * @param checkString 被检测的字符串
      * @return 是否未知
      */
-    private static boolean isUnknown(String checkString) {
+    public static boolean isUnknown(String checkString) {
         return StringUtils.hasText(checkString) || "unknown".equalsIgnoreCase(checkString);
     }
 }
