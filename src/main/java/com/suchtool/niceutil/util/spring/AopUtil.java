@@ -20,7 +20,7 @@ public class AopUtil {
     }
 
     /**
-     * 获得代理的bean
+     * 获得代理bean
      * @param bean 目标bean
      * @return 代理bean
      */
