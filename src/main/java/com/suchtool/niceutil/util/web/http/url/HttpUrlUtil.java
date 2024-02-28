@@ -17,9 +17,10 @@ public class HttpUrlUtil {
      * 拼接URL（自动添加或者去除首尾的/）
      *
      * @param fragments URL片段
+     * @param addScheme 是否自动添加协议头
      * @return 拼接好的URL
      */
-    public static String joinUrl(List<String> fragments) {
+    public static String joinUrl(List<String> fragments, boolean addScheme) {
         StringBuilder result = new StringBuilder();
 
         for (String fragment : fragments) {
@@ -39,12 +40,24 @@ public class HttpUrlUtil {
         }
 
         String url = result.toString();
-        if (!url.startsWith("http")
-                && !url.startsWith("https")) {
-            url = "http://" + url;
+        if (addScheme) {
+            if (!url.startsWith("http")
+                    && !url.startsWith("https")) {
+                url = "http://" + url;
+            }
         }
 
         return url;
+    }
+
+    /**
+     * 拼接URL（自动添加或者去除首尾的/。如果没有协议头，会自动添加）
+     *
+     * @param fragments URL片段
+     * @return 拼接好的URL
+     */
+    public static String joinUrl(List<String> fragments) {
+        return joinUrl(fragments, true);
     }
 
     /**
