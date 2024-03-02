@@ -5,164 +5,87 @@ package com.suchtool.niceutil.util.base;
  */
 public class ThrowableUtil {
     /**
-     * 获取以指定包名为前缀的堆栈信息
+     * 获取以指定包名为前缀的栈追踪
      *
-     * @param e 异常
-     * @return 堆栈信息
+     * @param t 异常
+     * @return 栈追踪
      */
-    public static String getStackTrace(Throwable e) {
-        StringBuilder s = new StringBuilder().append(e);
-        for (StackTraceElement traceElement : e.getStackTrace()) {
-            s.append("    at ").append(traceElement);
-        }
-        return s.toString();
+    public static String stackTraceToString(Throwable t) {
+        return StackTraceUtil.stackTraceToString(t.getStackTrace());
     }
 
     /**
-     * 获取最后n条堆栈信息
+     * 获取最后n条栈追踪
      *
-     * @param e 异常对象
-     * @param n 最后n行
-     * @return 错误信息
+     * @param t         异常对象
+     * @param lineCount 行数
+     * @return 栈追踪
      */
-    public static String getLastStackTrace(Throwable e, Integer n) {
-        Integer lineNumber = n;
-        if (lineNumber == null) {
-            lineNumber = 10;
-        }
-
-        StringBuilder s = new StringBuilder().append(e);
-        int i = 0;
-        for (StackTraceElement traceElement : e.getStackTrace()) {
-            s.append("    at ").append(traceElement);
-            if (i >= lineNumber) {
-                break;
-            }
-            i++;
-        }
-        return s.toString();
+    public static String stackTraceToString(Throwable t, Integer lineCount) {
+        return StackTraceUtil.stackTraceToString(t.getStackTrace(), lineCount);
     }
 
     /**
-     * 获取以指定包名为前缀的所有堆栈信息
+     * 获取以指定包名为前缀的所有栈追踪
      *
-     * @param e             异常
+     * @param t             异常
      * @param packagePrefix 包前缀
-     * @return 堆栈信息
+     * @return 栈追踪
      */
-    public static String getStackTraceByPackage(Throwable e, String packagePrefix) {
-        StringBuilder s = new StringBuilder().append(e);
-
-        for (StackTraceElement traceElement : e.getStackTrace()) {
-            // 如果是指定的包
-            if (traceElement.getClassName().startsWith(packagePrefix)) {
-                s.append("    at ").append(traceElement);
-            }
-        }
-        return s.toString();
+    public static String stackTraceToString(Throwable t,
+                                            String packagePrefix) {
+        return StackTraceUtil.stackTraceToString(t.getStackTrace(), packagePrefix);
     }
 
     /**
-     * 获取以指定包名为前缀的最后n条堆栈信息
+     * 获取以指定包名为前缀的最后n条栈追踪
      *
-     * @param e             异常
+     * @param t             异常
      * @param packagePrefix 包前缀
-     * @return 堆栈信息
+     * @param lineCount     行数
+     * @return 栈追踪
      */
-    public static String getLastStackTraceByPackage(Throwable e, String packagePrefix, Integer n) {
-        Integer lineNumber = n;
-        if (lineNumber == null) {
-            lineNumber = 10;
-        }
-
-        StringBuilder s = new StringBuilder().append(e);
-        int i = 0;
-        for (StackTraceElement traceElement : e.getStackTrace()) {
-            // 如果是指定的包
-            if (traceElement.getClassName().startsWith(packagePrefix)) {
-                s.append("    at ").append(traceElement);
-            }
-            if (i >= lineNumber) {
-                break;
-            }
-            i++;
-        }
-        return s.toString();
+    public static String stackTraceToString(Throwable t,
+                                            String packagePrefix,
+                                            Integer lineCount) {
+        return StackTraceUtil.stackTraceToString(t.getStackTrace(), packagePrefix, lineCount);
     }
 
     /**
-     * 获取最后n条简略堆栈信息（方法名加行号）
+     * 获取最后n条简略栈追踪（方法名加行号）
      *
-     * @param e 异常对象
-     * @param n 最后n行
-     * @return 错误信息
+     * @param t         异常对象
+     * @param lineCount 行数
+     * @return 栈追踪
      */
-    public static String getBriefLastStackTrace(Throwable e, Integer n) {
-        Integer lineNumber = n;
-        if (lineNumber == null) {
-            lineNumber = 10;
-        }
-
-        StringBuilder s = new StringBuilder().append(e);
-        int i = 0;
-        for (StackTraceElement traceElement : e.getStackTrace()) {
-            String info = traceElement.getMethodName() + ":" + traceElement.getLineNumber();
-
-            s.append("    at ").append(info);
-            if (i >= lineNumber) {
-                break;
-            }
-            i++;
-        }
-        return s.toString();
+    public static String stackTraceToStringBriefly(Throwable t,
+                                                   Integer lineCount) {
+        return StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), lineCount);
     }
 
     /**
-     * 获取以指定包名为前缀的所有简略堆栈信息（方法名+包名）
+     * 获取以指定包名为前缀的所有简略栈追踪（方法名+包名）
      *
-     * @param e             异常
+     * @param t             异常
      * @param packagePrefix 包前缀
-     * @return 堆栈信息
+     * @return 栈追踪
      */
-    public static String getBriefStackTraceByPackage(Throwable e, String packagePrefix) {
-        StringBuilder s = new StringBuilder().append(e);
-
-        for (StackTraceElement traceElement : e.getStackTrace()) {
-            // 如果是指定的包
-            if (traceElement.getClassName().startsWith(packagePrefix)) {
-                String info = traceElement.getMethodName() + ":" + traceElement.getLineNumber();
-                s.append("    at ").append(info);
-            }
-        }
-        return s.toString();
+    public static String stackTraceToStringBriefly(Throwable t,
+                                                   String packagePrefix) {
+        return StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), packagePrefix);
     }
 
     /**
-     * 获取以指定包名为前缀的最后n行简略堆栈信息（方法名+包名）
+     * 获取以指定包名为前缀的最后n行简略栈追踪（方法名+包名）
      *
-     * @param e             异常
+     * @param t             异常
      * @param packagePrefix 包前缀
-     * @return 堆栈信息
+     * @param lineCount     行数
+     * @return 栈追踪
      */
-    public static String getLastBriefStackTraceByPackage(Throwable e, String packagePrefix, Integer n) {
-        Integer lineNumber = n;
-        if (lineNumber == null) {
-            lineNumber = 10;
-        }
-
-        StringBuilder s = new StringBuilder().append(e);
-        int i = 0;
-        for (StackTraceElement traceElement : e.getStackTrace()) {
-            // 如果是指定的包
-            if (traceElement.getClassName().startsWith(packagePrefix)) {
-                String info = traceElement.getMethodName() + ":" + traceElement.getLineNumber();
-                s.append("    at ").append(info);
-            }
-            if (i >= lineNumber) {
-                break;
-            }
-            i++;
-        }
-        return s.toString();
+    public static String stackTraceToStringBriefly(Throwable t,
+                                                   String packagePrefix,
+                                                   Integer lineCount) {
+        return StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), packagePrefix, lineCount);
     }
 }
