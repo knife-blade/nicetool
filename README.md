@@ -8,8 +8,9 @@
 1. BeanUtil：Bean工具。功能：对象浅拷贝、对象深拷贝等
 2. JsonUtil：Json工具。功能：JSON字符串转对象、对象转JSON字符串等。
 3. PropertyUtil：属性工具。功能：获得值为null的属性名；把对象中的 String 类型的空字段，转换为指定字符串；等。
-4. ThrowableUtil：异常工具。功能：获得异常的堆栈信息（字符串）等。
-5. ValidateUtil：校验工具。功能：手动校验对象，等同于@Valid功能。
+4. StackTraceUtil：栈追踪工具。功能：获得栈追踪（字符串）等。
+5. ThrowableUtil：异常工具。功能：获得异常的栈追踪（字符串）等。
+6. ValidateUtil：校验工具。功能：手动校验对象，等同于@Valid功能。
 
 ### 日期
 1. DateTimeUtil：日期时间工具。功能：格式化LocalDateTime、Date；解析时间字符串为Date；将LocalDateTime转为Date；等等；
