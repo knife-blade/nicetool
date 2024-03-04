@@ -1,4 +1,4 @@
-package com.suchtool.niceutil.util.web.ip;
+package com.suchtool.nicetool.util.web.ip;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ClassUtils;
@@ -6,9 +6,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;

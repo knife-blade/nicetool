@@ -11,14 +11,14 @@
     </parent>
 
     <groupId>com.suchtool</groupId>
-    <artifactId>nice-util-spring-boot-starter</artifactId>
-    <version>1.3.6</version>
+    <artifactId>nicetool-spring-boot-starter</artifactId>
+    <version>1.0.0</version>
 
     <packaging>jar</packaging>
-    <name>nice-util-spring-boot-starter</name>
-    <description>nice util for java</description>
+    <name>nicetool-spring-boot-starter</name>
+    <description>nice tool for java</description>
 
-    <url>https://github.com/knife-blade/nice-util</url>
+    <url>https://github.com/knife-blade/nicetool</url>
 
     <dependencyManagement>
         <dependencies>
@@ -187,8 +187,8 @@
         </license>
     </licenses>
     <scm>
-        <url>https://github.com/knife-blade/nice-util</url>
-        <connection>https://github.com/knife-blade/nice-util.git</connection>
+        <url>https://github.com/knife-blade/nicetool</url>
+        <connection>https://github.com/knife-blade/nicetool.git</connection>
     </scm>
     <developers>
         <developer>

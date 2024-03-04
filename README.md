@@ -1,7 +1,7 @@
-# nice-util
+# nicetool
 
 ## 介绍
-超好用的Java工具类。特点是：稳定、最大程度利用SpringBoot原生工具。
+nicetool：超好用的Java工具类：稳定、方便。最大程度利用SpringBoot原生工具。
 
 ## 功能
 ### 基本
@@ -33,7 +33,7 @@
 ```xml
 <dependency>
     <groupId>com.suchtool</groupId>
-    <artifactId>nice-util-spring-boot-starter</artifactId>
+    <artifactId>nicetool-spring-boot-starter</artifactId>
     <version>{newest-version}</version>
 </dependency>
 ```

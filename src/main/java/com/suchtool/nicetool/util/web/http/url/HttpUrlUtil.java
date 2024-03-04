@@ -1,6 +1,6 @@
-package com.suchtool.niceutil.util.web.http.url;
+package com.suchtool.nicetool.util.web.http.url;
 
-import com.suchtool.niceutil.util.web.http.url.annotation.UrlParamProperty;
+import com.suchtool.nicetool.util.web.http.url.annotation.UrlParamProperty;
 import org.springframework.util.CollectionUtils;
 
 import java.io.UnsupportedEncodingException;
