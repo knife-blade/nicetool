@@ -1,4 +1,4 @@
-package com.suchtool.niceutil.util.web.http.url.annotation;
+package com.suchtool.nicetool.util.web.http.url.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
