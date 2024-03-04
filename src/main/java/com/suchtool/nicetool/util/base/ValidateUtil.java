@@ -1,4 +1,4 @@
-package com.suchtool.niceutil.util.base;
+package com.suchtool.nicetool.util.base;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

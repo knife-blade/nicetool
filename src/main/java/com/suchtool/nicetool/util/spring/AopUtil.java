@@ -1,4 +1,4 @@
-package com.suchtool.niceutil.util.spring;
+package com.suchtool.nicetool.util.spring;
 
 import org.springframework.aop.framework.Advised;
 
