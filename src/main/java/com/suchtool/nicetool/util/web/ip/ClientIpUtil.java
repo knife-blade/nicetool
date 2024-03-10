@@ -43,7 +43,7 @@ public class ClientIpUtil {
             return parseRemoteIp(request::getRemoteAddr);
         }
 
-        throw new RuntimeException("HttpServletRequest not exist");
+        throw new RuntimeException("HttpServletRequest doesn't exist, only support HttpServletRequest so far.");
     }
 
     private static String parseRemoteIp(Supplier<String> remoteIpSupplier) {
@@ -179,8 +179,9 @@ public class ClientIpUtil {
         ServletRequestAttributes servletRequestAttributes =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (servletRequestAttributes == null) {
-            throw new RuntimeException("ServletRequestAttributes is null");
+            throw new RuntimeException("ServletRequestAttributes is null, only support ServletRequest so far.");
         }
+        // 返回值不可能为null，无需判断
         return servletRequestAttributes.getRequest();
     }
 
