@@ -74,7 +74,7 @@ public class DateTimeUtil {
         return LocalTime.parse(localTimeString, DateTimeFormatter.ofPattern(format));
     }
 
-    public static LocalDateTime toLocalLocalDateTime(Date date) {
+    public static LocalDateTime toLocalDateTime(Date date) {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
