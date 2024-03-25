@@ -21,6 +21,7 @@ nicetool：超好用的Java工具类：稳定、方便。最大程度利用Sprin
 ### Spring
 1. AopUtil：AOP工具。功能：获得目标类；获得代理Bean；
 2. ApplicationContextHolder：持有Spring的ApplicationContext，可以静态调用。例如：ApplicationContextHolder.getContext().getBean(Xxx.class);。（基于Spring原生）
+3. SpringBootUtil：SpringBoot工具。功能：获得@SpringBootApplication标记的类的所在包；
 
 ### web
 
