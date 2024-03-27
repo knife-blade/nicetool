@@ -11,7 +11,7 @@ public class ThrowableUtil {
      * @return 栈追踪
      */
     public static String stackTraceToString(Throwable t) {
-        return StackTraceUtil.stackTraceToString(t.getStackTrace());
+        return t.toString() + StackTraceUtil.stackTraceToString(t.getStackTrace());
     }
 
     /**
@@ -22,7 +22,7 @@ public class ThrowableUtil {
      * @return 栈追踪
      */
     public static String stackTraceToString(Throwable t, Integer lineCount) {
-        return StackTraceUtil.stackTraceToString(t.getStackTrace(), lineCount);
+        return t.toString() + StackTraceUtil.stackTraceToString(t.getStackTrace(), lineCount);
     }
 
     /**
@@ -34,7 +34,7 @@ public class ThrowableUtil {
      */
     public static String stackTraceToString(Throwable t,
                                             String packagePrefix) {
-        return StackTraceUtil.stackTraceToString(t.getStackTrace(), packagePrefix);
+        return t.toString() + StackTraceUtil.stackTraceToString(t.getStackTrace(), packagePrefix);
     }
 
     /**
@@ -48,7 +48,7 @@ public class ThrowableUtil {
     public static String stackTraceToString(Throwable t,
                                             String packagePrefix,
                                             Integer lineCount) {
-        return StackTraceUtil.stackTraceToString(t.getStackTrace(), packagePrefix, lineCount);
+        return t.toString() + StackTraceUtil.stackTraceToString(t.getStackTrace(), packagePrefix, lineCount);
     }
 
     /**
@@ -60,7 +60,7 @@ public class ThrowableUtil {
      */
     public static String stackTraceToStringBriefly(Throwable t,
                                                    Integer lineCount) {
-        return StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), lineCount);
+        return t.toString() + StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), lineCount);
     }
 
     /**
@@ -72,7 +72,7 @@ public class ThrowableUtil {
      */
     public static String stackTraceToStringBriefly(Throwable t,
                                                    String packagePrefix) {
-        return StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), packagePrefix);
+        return t.toString() + StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), packagePrefix);
     }
 
     /**
@@ -86,6 +86,6 @@ public class ThrowableUtil {
     public static String stackTraceToStringBriefly(Throwable t,
                                                    String packagePrefix,
                                                    Integer lineCount) {
-        return StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), packagePrefix, lineCount);
+        return t.toString() + StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), packagePrefix, lineCount);
     }
 }
