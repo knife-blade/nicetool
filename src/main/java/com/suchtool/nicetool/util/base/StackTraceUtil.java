@@ -6,7 +6,7 @@ import org.springframework.util.StringUtils;
  * 栈追踪工具类
  */
 public class StackTraceUtil {
-    private static final String TRACE_PREFIX = "    at ";
+    private static final String TRACE_PREFIX = "\r\n    at ";
 
     /**
      * 获取以指定包名为前缀的栈追踪
