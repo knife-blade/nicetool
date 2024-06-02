@@ -16,6 +16,7 @@ public class CommandUtil {
         String data = null;
         String errorData = null;
         Process process = null;
+        int exitValue;
         try {
             String[] cmd = null;
 
@@ -32,6 +33,7 @@ public class CommandUtil {
             }
 
             process = Runtime.getRuntime().exec(cmd);
+            exitValue = process.waitFor();
 
             data = inputStreamToString(process.getInputStream());
             errorData = inputStreamToString(process.getErrorStream());
@@ -41,7 +43,7 @@ public class CommandUtil {
         }
 
         CommandVO commandVO = new CommandVO();
-        commandVO.setExitValue(process.exitValue());
+        commandVO.setExitValue(exitValue);
         commandVO.setData(data);
         commandVO.setErrorData(errorData);
 
