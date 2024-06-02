@@ -25,8 +25,16 @@ nicetool：超好用的Java工具类：稳定、方便。最大程度利用Sprin
 
 ### web
 
+#### HTTP
 1. HttpUrlUtil：Url工具。功能：将URL片段拼接为完整URL；将URL转化为参数字符串；将Map参数转为URL等；
-2. ClientIpUtil：IP工具。功能：获得调用方IP；获得客户端真实IP等；
+2. CurlUtil：调用Curl命令进行请求。
+
+#### IP
+1. ClientIpUtil：IP工具。功能：获得调用方IP；获得客户端真实IP等；
+
+### 系统
+1. SystemTypeUtil： 判断系统类型（Windows、Linux、Mac）
+2. CommandUtil：执行命令
 
 ## 快速使用
 
