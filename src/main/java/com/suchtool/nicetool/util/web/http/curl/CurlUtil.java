@@ -1,5 +1,6 @@
 package com.suchtool.nicetool.util.web.http.curl;
 
+import com.suchtool.nicetool.util.base.ValidateUtil;
 import com.suchtool.nicetool.util.system.command.CommandUtil;
 import com.suchtool.nicetool.util.system.command.vo.CommandVO;
 import com.suchtool.nicetool.util.web.http.curl.bo.CurlBO;
@@ -10,6 +11,8 @@ import org.springframework.util.StringUtils;
 
 public class CurlUtil {
     public static CurlVO request(CurlBO curlBO) {
+        ValidateUtil.validate(curlBO);
+
         StringBuilder cmdBuilder = new StringBuilder("curl -sS ");
         cmdBuilder.append(String.format("-X %s ", curlBO.getHttpMethod().name()));
         if (HttpMethod.HEAD.equals(curlBO.getHttpMethod())) {
