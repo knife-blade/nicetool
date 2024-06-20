@@ -10,6 +10,8 @@ public class CommandVO {
      */
     private Integer exitValue;
 
+    private String command;
+
     private String data;
 
     private String errorData;
