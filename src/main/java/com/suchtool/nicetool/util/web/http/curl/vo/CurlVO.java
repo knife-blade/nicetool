@@ -7,6 +7,8 @@ import lombok.Data;
 public class CurlVO {
     private CurlErrorCodeEnum errorCode;
 
+    private String command;
+
     private String errorMessage;
 
     private Integer httpStatusCode;

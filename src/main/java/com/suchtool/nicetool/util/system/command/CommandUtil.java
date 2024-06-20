@@ -44,6 +44,7 @@ public class CommandUtil {
 
         CommandVO commandVO = new CommandVO();
         commandVO.setExitValue(exitValue);
+        commandVO.setCommand(command);
         commandVO.setData(data);
         commandVO.setErrorData(errorData);
 

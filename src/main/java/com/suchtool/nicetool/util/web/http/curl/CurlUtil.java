@@ -66,6 +66,7 @@ public class CurlUtil {
 
         CurlVO curlVO = new CurlVO();
         curlVO.setErrorCode(errorCodeEnum);
+        curlVO.setCommand(commandVO.getCommand());
         curlVO.setHttpStatusCode(statusCode);
         curlVO.setHttpResponse(httpResponseBuilder.toString());
         curlVO.setErrorMessage(httpErrorResponseBuilder.toString());
