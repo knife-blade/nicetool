@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.suchtool.nicetool.property.NiceToolProperty;
 import com.suchtool.nicetool.util.spring.ApplicationContextHolder;
 
 import java.util.List;
@@ -20,6 +21,15 @@ public class JsonUtil {
             ApplicationContextHolder.getContext().getBean(ObjectMapper.class);
 
     static {
+        NiceToolProperty niceToolProperty =
+                ApplicationContextHolder.getContext().getBean(NiceToolProperty.class);
+
+        if (niceToolProperty.getJsonUtilExtraConfig()) {
+            extraConfig();
+        }
+    }
+
+    private static void extraConfig() {
         // 反序列化：JSON字段中有Java对象中没有的字段时不报错
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 

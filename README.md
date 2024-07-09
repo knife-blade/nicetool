@@ -33,7 +33,7 @@ nicetool：超好用的Java工具类：稳定、方便。最大程度利用Sprin
 1. ClientIpUtil：IP工具。功能：获得调用方IP；获得客户端真实IP等；
 
 ### 系统
-1. SystemTypeUtil： 判断系统类型（Windows、Linux、Mac）
+1. SystemTypeUtil：判断系统类型（Windows、Linux、Mac）
 2. CommandUtil：执行命令
 
 ## 快速使用
@@ -51,3 +51,10 @@ nicetool：超好用的Java工具类：稳定、方便。最大程度利用Sprin
 String jsonString = JsonUtil.toJsonString(obj);
 ```
 
+### 3.详细配置
+
+支持SpringBoot的配置文件进行配置，比如：application.yml。
+
+| 配置                                        | 描述                  | 默认值  |
+|---------------------------------------------|----------------------|------|
+| suchtool.nicetool.json-util-extra-config    | JsonUtil进行额外配置  | true |
