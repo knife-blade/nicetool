@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,10 +12,11 @@ import java.util.List;
 public class BeanUtil {
     /**
      * 对象浅拷贝
+     *
      * @param source 源对象
      * @param target 目标对象对应的类
+     * @param <T>    目标对象泛型
      * @return 目标对象
-     * @param <T> 目标对象泛型
      */
     public static <T> T copy(Object source, Class<T> target) {
         if (source == null) {
@@ -32,10 +34,11 @@ public class BeanUtil {
 
     /**
      * 对象浅拷贝
+     *
      * @param sources 源对象列表
-     * @param target 目标对象对应的类
+     * @param target  目标对象对应的类
+     * @param <T>     目标对象泛型
      * @return 目标对象
-     * @param <T> 目标对象泛型
      */
     public static <T> List<T> copy(List<?> sources, Class<T> target) {
         if (CollectionUtils.isEmpty(sources)) {
@@ -56,13 +59,14 @@ public class BeanUtil {
     }
 
     /**
-     * 对象深拷贝
+     * 对象深拷贝（通过json）
+     *
      * @param source 源对象
      * @param target 目标对象对应的类
+     * @param <T>    目标对象泛型
      * @return 目标对象
-     * @param <T> 目标对象泛型
      */
-    public static <T> T deepCopy(Object source, Class<T> target) {
+    public static <T> T deepCopyByJson(Object source, Class<T> target) {
         if (source == null) {
             return null;
         }
@@ -71,18 +75,52 @@ public class BeanUtil {
     }
 
     /**
-     * 对象深拷贝
+     * 对象深拷贝（通过json）
      * （此处第二个参数必须用TypeReference，如果用Class<T> 会导致泛型擦除，最后返回的是个List<LinedHashMap>）
-     * @param sources 源对象列表
+     *
+     * @param sources       源对象列表
      * @param typeReference 目标对象对应的类型
+     * @param <T>           目标对象泛型
      * @return 目标对象
-     * @param <T> 目标对象泛型
      */
-    public static <T> List<T> deepCopy(List<?> sources, TypeReference<List<T>> typeReference) {
+    public static <T> List<T> deepCopyByJson(List<?> sources, TypeReference<List<T>> typeReference) {
         if (CollectionUtils.isEmpty(sources)) {
             return new ArrayList<>();
         }
         String json = JsonUtil.toJsonString(sources);
         return JsonUtil.toObjectList(json, typeReference);
+    }
+
+    /**
+     * 对象深拷贝（通过Serializable）
+     *
+     * @param source 源对象
+     * @param target 目标对象对应的类
+     * @param <T>    目标对象泛型
+     * @return 目标对象
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T deepCopyBySerializable(Object source, Class<T> target) {
+        if (source == null || target == null) {
+            throw new IllegalArgumentException("Source object and target class must not be null.");
+        }
+
+        if (!(source instanceof Serializable)) {
+            throw new IllegalArgumentException("Source object must implement Serializable.");
+        }
+
+        try {
+            // 将源对象写入流中
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+            objectOutputStream.writeObject(source);
+
+            // 从流中读取对象并转换为目标类的实例
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+            return (T) objectInputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
