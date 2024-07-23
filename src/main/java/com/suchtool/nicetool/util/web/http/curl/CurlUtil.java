@@ -23,8 +23,8 @@ public class CurlUtil {
         }
         cmdBuilder.append(String.format("--max-time %d ", curlBO.getTimeout().getSeconds()));
         cmdBuilder.append("-w %{http_code} ");
-        if (StringUtils.hasText(curlBO.getProxyIp())) {
-            cmdBuilder.append(String.format("-x %s:%d ", curlBO.getProxyIp(), curlBO.getProxyPort()));
+        if (StringUtils.hasText(curlBO.getProxyHost())) {
+            cmdBuilder.append(String.format("-x %s:%d ", curlBO.getProxyHost(), curlBO.getProxyPort()));
         }
         if (StringUtils.hasText(curlBO.getProxyUsername())) {
             cmdBuilder.append(String.format("-U %s:%s ", curlBO.getProxyUsername(), curlBO.getProxyPassword()));
