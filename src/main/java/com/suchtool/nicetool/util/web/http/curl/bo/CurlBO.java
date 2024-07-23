@@ -25,7 +25,7 @@ public class CurlBO {
 
     private String proxyPassword;
 
-    private String proxyIp;
+    private String proxyHost;
 
     private Integer proxyPort;
 }
