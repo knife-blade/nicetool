@@ -2,6 +2,8 @@ package com.suchtool.nicetool.util.base;
 
 import org.springframework.util.StringUtils;
 
+import java.util.StringJoiner;
+
 /**
  * 栈追踪工具类
  */
@@ -52,14 +54,14 @@ public class StackTraceUtil {
     public static String stackTraceToString(StackTraceElement[] stackTraceElements,
                                             String packagePrefix,
                                             Integer n) {
-        StringBuilder s = new StringBuilder();
+        StringJoiner joiner = new StringJoiner(TRACE_PREFIX);
 
         for (int i = 0; i < stackTraceElements.length; i++) {
             StackTraceElement stackTraceElement = stackTraceElements[i];
             // 如果是指定的包，则收集。（未指定也收集）
             if (!StringUtils.hasText(packagePrefix)
                     || stackTraceElement.getClassName().startsWith(packagePrefix)) {
-                s.append(TRACE_PREFIX).append(stackTraceElement);
+                joiner.add(stackTraceElement.toString());
             }
 
             // 如果指定了行数，则收集满了就退出。（不指定则全部收集）
@@ -68,7 +70,7 @@ public class StackTraceUtil {
             }
         }
 
-        return s.toString();
+        return joiner.toString();
     }
 
     /**
