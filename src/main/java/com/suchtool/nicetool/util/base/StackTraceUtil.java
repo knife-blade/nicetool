@@ -1,7 +1,9 @@
 package com.suchtool.nicetool.util.base;
 
-import org.springframework.util.StringUtils;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.StringJoiner;
 
 /**
@@ -35,32 +37,30 @@ public class StackTraceUtil {
     /**
      * 获取以指定包名为前缀的所有栈追踪
      *
-     * @param stackTraceElements 栈追踪元素
-     * @param packagePrefix      包前缀
+     * @param stackTraceElements      栈追踪元素
+     * @param packagePrefixCollection 包前缀集合
      * @return 栈追踪
      */
     public static String stackTraceToString(StackTraceElement[] stackTraceElements,
-                                            String packagePrefix) {
-        return stackTraceToString(stackTraceElements, packagePrefix, null);
+                                            Collection<String> packagePrefixCollection) {
+        return stackTraceToString(stackTraceElements, packagePrefixCollection, null);
     }
 
     /**
      * 获取以指定包名为前缀的最后n条栈追踪
      *
-     * @param stackTraceElements 栈追踪元素
-     * @param packagePrefix      包前缀
+     * @param stackTraceElements      栈追踪元素
+     * @param packagePrefixCollection 包前缀集合
      * @return 栈追踪
      */
     public static String stackTraceToString(StackTraceElement[] stackTraceElements,
-                                            String packagePrefix,
+                                            Collection<String> packagePrefixCollection,
                                             Integer n) {
         StringJoiner joiner = new StringJoiner(TRACE_PREFIX);
 
         for (int i = 0; i < stackTraceElements.length; i++) {
             StackTraceElement stackTraceElement = stackTraceElements[i];
-            // 如果是指定的包，则收集。（未指定也收集）
-            if (!StringUtils.hasText(packagePrefix)
-                    || stackTraceElement.getClassName().startsWith(packagePrefix)) {
+            if (requireCollect(stackTraceElement, packagePrefixCollection)) {
                 joiner.add(stackTraceElement.toString());
             }
 
@@ -98,32 +98,31 @@ public class StackTraceUtil {
     /**
      * 获取以指定包名为前缀的所有简略栈追踪（方法名+包名）
      *
-     * @param stackTraceElements 栈追踪元素
-     * @param packagePrefix      包前缀
+     * @param stackTraceElements      栈追踪元素
+     * @param packagePrefixCollection 包前缀集合
      * @return 栈追踪
      */
     public static String stackTraceToStringBriefly(StackTraceElement[] stackTraceElements,
-                                                   String packagePrefix) {
-        return stackTraceToStringBriefly(stackTraceElements, packagePrefix, null);
+                                                   Collection<String> packagePrefixCollection) {
+        return stackTraceToStringBriefly(stackTraceElements, packagePrefixCollection, null);
     }
 
     /**
      * 获取以指定包名为前缀的最后n行简略栈追踪（方法名+包名）
      *
-     * @param stackTraceElements 栈追踪元素
-     * @param packagePrefix      包前缀
-     * @param lineCount          行数
+     * @param stackTraceElements      栈追踪元素
+     * @param packagePrefixCollection 包前缀集合
+     * @param lineCount               行数
      * @return 栈追踪
      */
     public static String stackTraceToStringBriefly(StackTraceElement[] stackTraceElements,
-                                                   String packagePrefix,
+                                                   Collection<String> packagePrefixCollection,
                                                    Integer lineCount) {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < stackTraceElements.length; i++) {
             StackTraceElement stackTraceElement = stackTraceElements[i];
             // 如果是指定的包，则收集。（未指定也收集）
-            if (StringUtils.hasText(packagePrefix)
-                    || stackTraceElement.getClassName().startsWith(packagePrefix)) {
+            if (requireCollect(stackTraceElement, packagePrefixCollection)) {
                 String info = stackTraceElement.getMethodName() + ":" + stackTraceElement.getLineNumber();
                 s.append(TRACE_PREFIX).append(info);
             }
@@ -135,5 +134,23 @@ public class StackTraceUtil {
         }
 
         return s.toString();
+    }
+
+    // 如果是指定的包，则收集。（若指定包为空则也收集）
+    private static boolean requireCollect(
+            StackTraceElement stackTraceElement,
+            Collection<String> packagePrefixCollection) {
+
+        if (CollectionUtils.isEmpty(packagePrefixCollection)) {
+            return true;
+        }
+
+        for (String packagePrefix : packagePrefixCollection) {
+            if (stackTraceElement.getClassName().startsWith(packagePrefix)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

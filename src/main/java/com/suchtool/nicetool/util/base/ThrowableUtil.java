@@ -1,5 +1,8 @@
 package com.suchtool.nicetool.util.base;
 
+import java.util.Collection;
+import java.util.List;
+
 /**
  * 异常工具类
  */
@@ -33,29 +36,29 @@ public class ThrowableUtil {
     /**
      * 获取以指定包名为前缀的所有栈追踪
      *
-     * @param t             异常
-     * @param packagePrefix 包前缀
+     * @param t                       异常
+     * @param packagePrefixCollection 包前缀集合
      * @return 栈追踪
      */
     public static String stackTraceToString(Throwable t,
-                                            String packagePrefix) {
+                                            Collection<String> packagePrefixCollection) {
         return t.toString() + TRACE_PREFIX +
-                StackTraceUtil.stackTraceToString(t.getStackTrace(), packagePrefix);
+                StackTraceUtil.stackTraceToString(t.getStackTrace(), packagePrefixCollection);
     }
 
     /**
      * 获取以指定包名为前缀的最后n条栈追踪
      *
-     * @param t             异常
-     * @param packagePrefix 包前缀
-     * @param lineCount     行数
+     * @param t                       异常
+     * @param packagePrefixCollection 包前缀集合
+     * @param lineCount               行数
      * @return 栈追踪
      */
     public static String stackTraceToString(Throwable t,
-                                            String packagePrefix,
+                                            Collection<String> packagePrefixCollection,
                                             Integer lineCount) {
         return t.toString() + TRACE_PREFIX
-                + StackTraceUtil.stackTraceToString(t.getStackTrace(), packagePrefix, lineCount);
+                + StackTraceUtil.stackTraceToString(t.getStackTrace(), packagePrefixCollection, lineCount);
     }
 
     /**
@@ -74,28 +77,28 @@ public class ThrowableUtil {
     /**
      * 获取以指定包名为前缀的所有简略栈追踪（方法名+包名）
      *
-     * @param t             异常
-     * @param packagePrefix 包前缀
+     * @param t                       异常
+     * @param packagePrefixCollection 包前缀集合
      * @return 栈追踪
      */
     public static String stackTraceToStringBriefly(Throwable t,
-                                                   String packagePrefix) {
+                                                   Collection<String> packagePrefixCollection) {
         return t.toString() + TRACE_PREFIX +
-                StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), packagePrefix);
+                StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), packagePrefixCollection);
     }
 
     /**
      * 获取以指定包名为前缀的最后n行简略栈追踪（方法名+包名）
      *
-     * @param t             异常
-     * @param packagePrefix 包前缀
-     * @param lineCount     行数
+     * @param t                       异常
+     * @param packagePrefixCollection 包前缀集合
+     * @param lineCount               行数
      * @return 栈追踪
      */
     public static String stackTraceToStringBriefly(Throwable t,
-                                                   String packagePrefix,
+                                                   Collection<String> packagePrefixCollection,
                                                    Integer lineCount) {
         return t.toString() + TRACE_PREFIX +
-                StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), packagePrefix, lineCount);
+                StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), packagePrefixCollection, lineCount);
     }
 }
