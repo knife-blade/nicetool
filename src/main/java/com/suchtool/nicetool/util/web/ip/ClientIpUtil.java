@@ -40,10 +40,14 @@ public class ClientIpUtil {
                 "javax.servlet.http.HttpServletRequest", null);
         if (isHttpServletRequest) {
             HttpServletRequest request = getRequest();
-            return parseRemoteIp(request::getRemoteAddr);
+            if (request != null) {
+                return parseRemoteIp(request::getRemoteAddr);
+            } else {
+                return null;
+            }
+        } else {
+            return null;
         }
-
-        throw new RuntimeException("HttpServletRequest doesn't exist, only support HttpServletRequest so far.");
     }
 
     private static String parseRemoteIp(Supplier<String> remoteIpSupplier) {
@@ -89,10 +93,13 @@ public class ClientIpUtil {
                 "javax.servlet.http.HttpServletRequest", null);
         if (isHttpServletRequest) {
             HttpServletRequest request = getRequest();
+            if (request == null) {
+                return null;
+            }
             return parseClientIPByHeader(null, request::getHeader);
+        } else {
+            return null;
         }
-
-        throw new RuntimeException("HttpServletRequest not exist");
     }
 
     public static String parseClientIP(Function<String, String> headValueSupplier) {
@@ -179,7 +186,7 @@ public class ClientIpUtil {
         ServletRequestAttributes servletRequestAttributes =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (servletRequestAttributes == null) {
-            throw new RuntimeException("ServletRequestAttributes is null, only support ServletRequest so far.");
+            return null;
         }
         // 返回值不可能为null，无需判断
         return servletRequestAttributes.getRequest();
