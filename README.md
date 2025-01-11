@@ -23,7 +23,7 @@ nicetool：超好用的Java工具类：稳定、方便。最大程度利用Sprin
 2. ApplicationContextHolder：持有Spring的ApplicationContext，可以静态调用。例如：ApplicationContextHolder.getContext().getBean(Xxx.class);。（基于Spring原生）
 3. SpringBootUtil：SpringBoot工具。功能：获得@SpringBootApplication标记的类的所在包；
 
-### web
+### Web
 
 #### HTTP
 1. HttpUrlUtil：Url工具。功能：将URL片段拼接为完整URL；将URL转化为参数字符串；将Map参数转为URL等；
@@ -31,6 +31,10 @@ nicetool：超好用的Java工具类：稳定、方便。最大程度利用Sprin
 
 #### IP
 1. ClientIpUtil：IP工具。功能：获得调用方IP；获得客户端真实IP等；
+
+#### Stream
+1. WebStreamUtil：网络流工具。功能：将输入流输出到接口响应等；
+
 
 ### 系统
 1. SystemTypeUtil：判断系统类型（Windows、Linux、Mac）
