@@ -10,6 +10,8 @@ public class CurlVO {
 
     private String command;
 
+    private String originResult;
+
     private String errorMessage;
 
     private MultiValueMap<String, String> header;
