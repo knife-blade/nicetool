@@ -5,11 +5,14 @@ package com.suchtool.nicetool.util.system.command;
 import com.suchtool.nicetool.util.system.command.vo.CommandVO;
 import com.suchtool.nicetool.util.system.systemtype.SystemTypeUtil;
 import com.suchtool.nicetool.util.system.systemtype.constant.SystemTypeEnum;
+import org.springframework.util.StreamUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class CommandUtil {
     public static CommandVO executeCommand(String command) {
@@ -33,10 +36,13 @@ public class CommandUtil {
             }
 
             process = Runtime.getRuntime().exec(cmd);
-            exitValue = process.waitFor();
 
-            data = inputStreamToString(process.getInputStream());
-            errorData = inputStreamToString(process.getErrorStream());
+            // 输出结果，必须写在 waitFor 之前
+            data = StreamUtils.copyToString(process.getInputStream(), StandardCharsets.UTF_8);
+            // 错误结果，必须写在 waitFor 之前
+            errorData = StreamUtils.copyToString(process.getErrorStream(), StandardCharsets.UTF_8);
+
+            exitValue = process.waitFor();
         } catch (Exception e) {
             String msg = String.format("执行命令失败。(命令为：%s)", command);
             throw new RuntimeException(msg, e);
@@ -45,21 +51,9 @@ public class CommandUtil {
         CommandVO commandVO = new CommandVO();
         commandVO.setExitValue(exitValue);
         commandVO.setCommand(command);
-        commandVO.setData(data);
-        commandVO.setErrorData(errorData);
+        commandVO.setSuccessResult(data);
+        commandVO.setErrorResult(errorData);
 
         return commandVO;
     }
-
-    private static String inputStreamToString(InputStream inputStream) throws IOException {
-        BufferedReader inputStreamReader = new BufferedReader(new InputStreamReader(inputStream));
-        StringBuilder inputStreamBuilder = new StringBuilder();
-        String line;
-
-        while ((line = inputStreamReader.readLine()) != null) {
-            inputStreamBuilder.append(line).append(System.lineSeparator());
-        }
-        return inputStreamBuilder.toString();
-    }
-
 }

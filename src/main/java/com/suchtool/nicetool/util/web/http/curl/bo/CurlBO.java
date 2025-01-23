@@ -17,6 +17,8 @@ public class CurlBO {
 
     private Boolean enableResponseHeader = false;
 
+    private Boolean parseResponseBody = false;
+
     private Integer redirectMaxCount = 5;
 
     private Duration timeout = Duration.ofSeconds(5);

@@ -11,6 +11,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
+import java.nio.file.FileSystem;
+
 public class CurlUtil {
     public static CurlVO request(CurlBO curlBO) {
         ValidateUtil.validate(curlBO);
@@ -27,6 +29,7 @@ public class CurlUtil {
             cmdBuilder.append(String.format("-L --max-redirs %d ", curlBO.getRedirectMaxCount()));
         }
         cmdBuilder.append(String.format("--max-time %d ", curlBO.getTimeout().getSeconds()));
+
         cmdBuilder.append("-w %{http_code} ");
         if (StringUtils.hasText(curlBO.getProxyHost())) {
             cmdBuilder.append(String.format("-x %s:%d ", curlBO.getProxyHost(), curlBO.getProxyPort()));
@@ -48,49 +51,42 @@ public class CurlUtil {
 
         CurlErrorCodeEnum errorCodeEnum = CurlErrorCodeEnum.queryByCode(commandVO.getExitValue());
 
-        String lineSeparator = System.lineSeparator();
-
+        MultiValueMap<String, String> responseHeader = null;
         Integer statusCode = null;
-        StringBuilder httpResponseBuilder = new StringBuilder();
-        if (CurlErrorCodeEnum.SUCCESS.equals(errorCodeEnum)
-                && StringUtils.hasText(commandVO.getData())) {
-            String[] httpResponses = commandVO.getData().split(lineSeparator);
+        String responseBody = null;
+        if (CurlErrorCodeEnum.SUCCESS.equals(errorCodeEnum)) {
+            if (StringUtils.hasText(commandVO.getSuccessResult())) {
+                String originResponse = commandVO.getSuccessResult();
+                String lineSeparator = System.lineSeparator();
 
-            // 最后一个是状态码
-            for (int i = 0; i < httpResponses.length - 1; i++) {
-                httpResponseBuilder.append(httpResponses[i]);
+                // 分割每行响应头
+                String[] lines = originResponse.split(lineSeparator);
+
+                if (curlBO.getEnableResponseHeader()) {
+                    responseHeader = parseResponseHeader(lines);
+                }
+
+                if (curlBO.getParseResponseBody()) {
+                    responseBody = parseResponseBody(curlBO, lines);
+                }
+
+                statusCode = parseStatusCode(lines);
             }
-            statusCode = Integer.parseInt(httpResponses[httpResponses.length - 1]);
-        }
-
-        StringBuilder httpErrorResponseBuilder = new StringBuilder();
-        if (StringUtils.hasText(commandVO.getErrorData())) {
-            String[] httpErrorResponses = commandVO.getErrorData().split(lineSeparator);
-            for (String httpErrorResponse : httpErrorResponses) {
-                httpErrorResponseBuilder.append(httpErrorResponse);
-            }
-        }
-
-        if (curlBO.getEnableResponseHeader()) {
-            curlVO.setHeader(parseHeader(commandVO.getData(), lineSeparator));
         }
 
         curlVO.setErrorCode(errorCodeEnum);
-        curlVO.setCommand(commandVO.getCommand());
-        curlVO.setOriginResult(commandVO.getData());
+        curlVO.setCommandVO(commandVO);
+        curlVO.setErrorMessage(commandVO.getErrorResult());
+        curlVO.setOriginResponse(commandVO.getSuccessResult());
+        curlVO.setResponseHeader(responseHeader);
+        curlVO.setResponseBody(responseBody);
         curlVO.setHttpStatusCode(statusCode);
-        curlVO.setHttpResponse(httpResponseBuilder.toString());
-        curlVO.setErrorMessage(httpErrorResponseBuilder.toString());
 
         return curlVO;
     }
 
-    private static MultiValueMap<String, String> parseHeader(String responseData,
-                                                             String lineSeparator) {
+    private static MultiValueMap<String, String> parseResponseHeader(String[] lines) {
         MultiValueMap<String, String> headersMap = new LinkedMultiValueMap<>();
-
-        // 分割每行响应头
-        String[] lines = responseData.split(lineSeparator);
 
         for (String line : lines) {
             // 空行则退出（结束）
@@ -111,6 +107,31 @@ public class CurlUtil {
         }
 
         return headersMap;
+    }
+
+    private static String parseResponseBody(CurlBO curlBO,
+                                            String[] lines) {
+        int htmlIndex = 0;
+        if (curlBO.getEnableResponseHeader()) {
+            for (int i = lines.length - 1; i >= 0; i--) {
+                if (lines[i].contains("<!DOCTYPE html>")) {
+                    htmlIndex = i;
+                    break;
+                }
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = htmlIndex; i < lines.length; i++) {
+            stringBuilder.append(lines[i]);
+        }
+
+        return stringBuilder.toString();
+    }
+
+    private static Integer parseStatusCode(String[] lines) {
+        String lastLine = lines[lines.length - 1];
+        String statusCodeStr = lastLine.substring(lastLine.length() - 3);
+        return Integer.parseInt(statusCodeStr);
     }
 
 }
