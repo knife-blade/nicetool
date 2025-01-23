@@ -12,7 +12,7 @@ public class CommandVO {
 
     private String command;
 
-    private String data;
+    private String successResult;
 
-    private String errorData;
+    private String errorResult;
 }
