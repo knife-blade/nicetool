@@ -37,7 +37,7 @@ public class CurlUtil {
         if (StringUtils.hasText(curlBO.getProxyUsername())) {
             cmdBuilder.append(String.format("-U %s:%s ", curlBO.getProxyUsername(), curlBO.getProxyPassword()));
         }
-        cmdBuilder.append(String.format("%s", curlBO.getUrl()));
+        cmdBuilder.append(String.format("\"%s\" ", curlBO.getUrl()));
 
         String cmd = cmdBuilder.toString();
 
