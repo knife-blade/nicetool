@@ -1,6 +1,8 @@
 package com.suchtool.nicetool.util.web.stream;
 
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -11,18 +13,35 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 网络流工具
  */
 public class WebStreamUtil {
     /**
-     * 使用流所为响应
-     * @param inputStream 输入流
+     * 使用流所为响应。指定文件名
+     *
+     * @param inputStream    输入流
      * @param outputFileName 输出的文件名
      */
     public static void responseAsStream(InputStream inputStream,
-                                         String outputFileName) {
+                                        String outputFileName){
+        responseAsStream(inputStream, outputFileName, null);
+    }
+
+
+    /**
+     * 使用流所为响应。指定文件名和响应头
+     *
+     * @param inputStream    输入流
+     * @param outputFileName 输出的文件名
+     * @param responseHeader 响应头
+     */
+    public static void responseAsStream(InputStream inputStream,
+                                        String outputFileName,
+                                        MultiValueMap<String, String> responseHeader) {
         ServletRequestAttributes servletRequestAttributes =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         Assert.notNull(servletRequestAttributes, "RequestAttributes不能为null");
@@ -41,6 +60,10 @@ public class WebStreamUtil {
         response.setContentType("multipart/form-data");
         response.setCharacterEncoding("utf-8");
 
+        if (!CollectionUtils.isEmpty(responseHeader)) {
+            appendResponseHeader(response, responseHeader);
+        }
+
         ServletOutputStream outputStream;
         try {
             outputStream = response.getOutputStream();
@@ -52,6 +75,18 @@ public class WebStreamUtil {
             StreamUtils.copy(inputStream, outputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static void appendResponseHeader(HttpServletResponse response,
+                                             MultiValueMap<String, String> responseHeader) {
+        for (Map.Entry<String, List<String>> entry : responseHeader.entrySet()) {
+            String key = entry.getKey();
+            List<String> value = entry.getValue();
+
+            for (String headerValue : value) {
+                response.addHeader(key, headerValue);
+            }
         }
     }
 }
