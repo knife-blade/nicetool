@@ -26,6 +26,7 @@ public class CommandUtil {
             SystemTypeEnum systemTypeEnum = SystemTypeUtil.judgeSystemType();
             switch (systemTypeEnum) {
                 case LINUX:
+                case MAC:
                     cmd = new String[]{"/bin/sh", "-c", command};
                     break;
                 case WINDOWS:

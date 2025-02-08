@@ -9,15 +9,28 @@ import org.springframework.util.MultiValueMap;
 public class CurlVO {
     private CurlErrorCodeEnum errorCode;
 
+    /**
+     * curl命令数据
+     */
     private CommandVO commandVO;
 
+    /**
+     * 错误信息
+     */
     private String errorMessage;
 
+    /**
+     * 原始响应
+     */
     private String originResponse;
 
+    /**
+     * 第一个请求的响应Header
+     */
     private MultiValueMap<String, String> responseHeader;
 
-    private String responseBody;
-
+    /**
+     * HTTP状态码
+     */
     private Integer httpStatusCode;
 }
