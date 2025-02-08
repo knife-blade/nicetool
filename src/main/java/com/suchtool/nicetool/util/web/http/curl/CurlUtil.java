@@ -3,6 +3,8 @@ package com.suchtool.nicetool.util.web.http.curl;
 import com.suchtool.nicetool.util.base.ValidateUtil;
 import com.suchtool.nicetool.util.system.command.CommandUtil;
 import com.suchtool.nicetool.util.system.command.vo.CommandVO;
+import com.suchtool.nicetool.util.system.systemtype.SystemTypeUtil;
+import com.suchtool.nicetool.util.system.systemtype.constant.SystemTypeEnum;
 import com.suchtool.nicetool.util.web.http.curl.bo.CurlBO;
 import com.suchtool.nicetool.util.web.http.curl.constant.CurlErrorCodeEnum;
 import com.suchtool.nicetool.util.web.http.curl.vo.CurlVO;
@@ -18,9 +20,30 @@ public class CurlUtil {
         ValidateUtil.validate(curlBO);
 
         StringBuilder cmdBuilder = new StringBuilder("curl -sS ");
-        if (curlBO.getEnableResponseHeader()) {
+
+        if (!curlBO.getEnableResponseHeader()
+                && !curlBO.getEnableResponseBody()) {
+            String device = null;
+            SystemTypeEnum systemTypeEnum = SystemTypeUtil.judgeSystemType();
+            switch (systemTypeEnum) {
+                case LINUX:
+                case MAC:
+                    device = "/dev/null";
+                    break;
+                case WINDOWS:
+                    device = "NULL";
+                    break;
+                default:
+                    throw new RuntimeException("暂时不支持此系统：" + systemTypeEnum.getDescription());
+            }
+            cmdBuilder.append("-o " + device + " ");
+        }
+
+        if (curlBO.getEnableResponseHeader()
+            && !HttpMethod.HEAD.equals(curlBO.getHttpMethod())) {
             cmdBuilder.append("-i ");
         }
+
         cmdBuilder.append(String.format("-X %s ", curlBO.getHttpMethod().name()));
         if (HttpMethod.HEAD.equals(curlBO.getHttpMethod())) {
             cmdBuilder.append("--head ");
@@ -66,10 +89,6 @@ public class CurlUtil {
                     responseHeader = parseResponseHeader(lines);
                 }
 
-                if (curlBO.getParseResponseBody()) {
-                    responseBody = parseResponseBody(curlBO, lines);
-                }
-
                 statusCode = parseStatusCode(lines);
             }
         }
@@ -79,7 +98,6 @@ public class CurlUtil {
         curlVO.setErrorMessage(commandVO.getErrorResult());
         curlVO.setOriginResponse(commandVO.getSuccessResult());
         curlVO.setResponseHeader(responseHeader);
-        curlVO.setResponseBody(responseBody);
         curlVO.setHttpStatusCode(statusCode);
 
         return curlVO;
