@@ -1,9 +1,6 @@
 package com.suchtool.nicetool.util.web.stream;
 
-import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.MultiValueMap;
-import org.springframework.util.StreamUtils;
+import org.springframework.util.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -55,6 +52,10 @@ public class WebStreamUtil {
             throw new RuntimeException(e);
         }
 
+        String originHeaderContentDisposition = response.getHeader("Content-disposition");
+        String originContentType = response.getContentType();
+        String originCharacterEncoding = response.getCharacterEncoding();
+
         // 通知浏览器以附件的形式下载处理，设置返回头要注意文件名有中文
         response.setHeader("Content-disposition", "attachment;filename=" + fileName);
         response.setContentType("multipart/form-data");
@@ -67,13 +68,20 @@ public class WebStreamUtil {
         ServletOutputStream outputStream;
         try {
             outputStream = response.getOutputStream();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
             StreamUtils.copy(inputStream, outputStream);
         } catch (IOException e) {
+            // 恢复原响应设置，用于全局响应提示错误等
+            if (StringUtils.hasText(originHeaderContentDisposition)) {
+                response.setHeader("Content-disposition", originHeaderContentDisposition);
+            }
+
+            if (StringUtils.hasText(originContentType)) {
+                response.setContentType(originContentType);
+            }
+
+            if (StringUtils.hasText(originCharacterEncoding)) {
+                response.setCharacterEncoding(originCharacterEncoding);
+            }
             throw new RuntimeException(e);
         }
     }
