@@ -1,5 +1,6 @@
 package com.suchtool.nicetool.util.web.stream;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -16,6 +17,7 @@ import java.util.Map;
 /**
  * 网络流工具
  */
+@Slf4j
 public class WebStreamUtil {
     /**
      * 使用流所为响应。指定文件名
@@ -65,7 +67,7 @@ public class WebStreamUtil {
             appendResponseHeader(response, responseHeader);
         }
 
-        ServletOutputStream outputStream;
+        ServletOutputStream outputStream = null;
         try {
             outputStream = response.getOutputStream();
             StreamUtils.copy(inputStream, outputStream);
@@ -83,6 +85,24 @@ public class WebStreamUtil {
                 response.setCharacterEncoding(originCharacterEncoding);
             }
             throw new RuntimeException(e);
+        } finally {
+            // 确保流在使用完毕后被关闭
+
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (IOException e) {
+                log.error("输入流关闭失败", e);
+            }
+
+            try {
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                log.error("输出流关闭失败", e);
+            }
         }
     }
 
