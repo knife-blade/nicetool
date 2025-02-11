@@ -72,22 +72,9 @@ public class WebStreamUtil {
             outputStream = response.getOutputStream();
             StreamUtils.copy(inputStream, outputStream);
         } catch (IOException e) {
-            // 恢复原响应设置，用于全局响应提示错误等
-            if (StringUtils.hasText(originHeaderContentDisposition)) {
-                response.setHeader("Content-disposition", originHeaderContentDisposition);
-            }
-
-            if (StringUtils.hasText(originContentType)) {
-                response.setContentType(originContentType);
-            }
-
-            if (StringUtils.hasText(originCharacterEncoding)) {
-                response.setCharacterEncoding(originCharacterEncoding);
-            }
             throw new RuntimeException(e);
         } finally {
             // 确保流在使用完毕后被关闭
-
             try {
                 if (inputStream != null) {
                     inputStream.close();
