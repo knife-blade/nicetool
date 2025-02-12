@@ -120,21 +120,6 @@ public class JsonUtil {
     }
 
     /**
-     * 将JSON字符串转为对象列表
-     * @param jsonString JSON字符串
-     * @param typeReference 对象类型
-     * @return 对象列表
-     * @param <T> 对象泛型
-     */
-    public static <T> List<T> toObjectList(String jsonString, TypeReference<List<T>> typeReference) {
-        try {
-            return objectMapper.readValue(jsonString, typeReference);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * 将JSON字符串转为JsonNode
      * @param jsonString JSON字符串
      * @return JsonNode对象

@@ -5,9 +5,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class BeanUtil {
     /**
@@ -76,19 +74,32 @@ public class BeanUtil {
 
     /**
      * 对象深拷贝（通过json）
-     * （此处第二个参数必须用TypeReference，如果用Class<T> 会导致泛型擦除，最后返回的是个List<LinedHashMap>）
+     * （此处第二个参数必须用TypeReference，如果用Class<T>：会导致泛型擦除，从而返回个List<LinedHashMap>）
      *
-     * @param sources       源对象列表
+     * @param source        源对象
      * @param typeReference 目标对象对应的类型
      * @param <T>           目标对象泛型
      * @return 目标对象
      */
-    public static <T> List<T> deepCopyByJson(List<?> sources, TypeReference<List<T>> typeReference) {
-        if (CollectionUtils.isEmpty(sources)) {
-            return new ArrayList<>();
+    public static <T> T deepCopyByJson(Object source, TypeReference<T> typeReference) {
+        if (source instanceof Collection) {
+            Collection<?> collection = (Collection<?>) source;
+            if (CollectionUtils.isEmpty(collection)) {
+                return null;
+            }
+        } else if (source instanceof Map) {
+            Map<?, ?> map = (Map<?, ?>) source;
+            if (CollectionUtils.isEmpty(map)) {
+                return null;
+            }
+        } else {
+            if (source == null) {
+                return null;
+            }
         }
-        String json = JsonUtil.toJsonString(sources);
-        return JsonUtil.toObjectList(json, typeReference);
+
+        String json = JsonUtil.toJsonString(source);
+        return JsonUtil.toObject(json, typeReference);
     }
 
     /**
