@@ -1,14 +1,14 @@
 package com.suchtool.nicetool.util.base;
 
+import org.springframework.util.StringUtils;
+
 import java.util.Collection;
-import java.util.List;
 
 /**
  * 异常工具类
  */
 public class ThrowableUtil {
     private static final String TRACE_PREFIX = "\r\n    at ";
-
 
     /**
      * 获取以指定包名为前缀的栈追踪
@@ -17,8 +17,8 @@ public class ThrowableUtil {
      * @return 栈追踪
      */
     public static String stackTraceToString(Throwable t) {
-        return t.toString() + TRACE_PREFIX
-                + StackTraceUtil.stackTraceToString(t.getStackTrace());
+        return t.toString()
+                + wrapStackTrace(StackTraceUtil.stackTraceToString(t.getStackTrace()));
     }
 
     /**
@@ -29,8 +29,8 @@ public class ThrowableUtil {
      * @return 栈追踪
      */
     public static String stackTraceToString(Throwable t, Integer lineCount) {
-        return t.toString() + TRACE_PREFIX
-                + StackTraceUtil.stackTraceToString(t.getStackTrace(), lineCount);
+        return t.toString()
+                + wrapStackTrace(StackTraceUtil.stackTraceToString(t.getStackTrace(), lineCount));
     }
 
     /**
@@ -42,8 +42,8 @@ public class ThrowableUtil {
      */
     public static String stackTraceToString(Throwable t,
                                             Collection<String> packagePrefixCollection) {
-        return t.toString() + TRACE_PREFIX +
-                StackTraceUtil.stackTraceToString(t.getStackTrace(), packagePrefixCollection);
+        return t.toString()
+                + wrapStackTrace(StackTraceUtil.stackTraceToString(t.getStackTrace(), packagePrefixCollection));
     }
 
     /**
@@ -57,8 +57,8 @@ public class ThrowableUtil {
     public static String stackTraceToString(Throwable t,
                                             Collection<String> packagePrefixCollection,
                                             Integer lineCount) {
-        return t.toString() + TRACE_PREFIX
-                + StackTraceUtil.stackTraceToString(t.getStackTrace(), packagePrefixCollection, lineCount);
+        return t.toString()
+                + wrapStackTrace(StackTraceUtil.stackTraceToString(t.getStackTrace(), packagePrefixCollection, lineCount));
     }
 
     /**
@@ -70,8 +70,8 @@ public class ThrowableUtil {
      */
     public static String stackTraceToStringBriefly(Throwable t,
                                                    Integer lineCount) {
-        return t.toString() + TRACE_PREFIX +
-                StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), lineCount);
+        return t.toString()
+                + wrapStackTrace(StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), lineCount));
     }
 
     /**
@@ -83,8 +83,8 @@ public class ThrowableUtil {
      */
     public static String stackTraceToStringBriefly(Throwable t,
                                                    Collection<String> packagePrefixCollection) {
-        return t.toString() + TRACE_PREFIX +
-                StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), packagePrefixCollection);
+        return t.toString()
+                + wrapStackTrace(StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), packagePrefixCollection));
     }
 
     /**
@@ -98,7 +98,15 @@ public class ThrowableUtil {
     public static String stackTraceToStringBriefly(Throwable t,
                                                    Collection<String> packagePrefixCollection,
                                                    Integer lineCount) {
-        return t.toString() + TRACE_PREFIX +
-                StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), packagePrefixCollection, lineCount);
+        return t.toString()
+                + wrapStackTrace(StackTraceUtil.stackTraceToStringBriefly(t.getStackTrace(), packagePrefixCollection, lineCount));
+    }
+
+    private static String wrapStackTrace(String stackTrace) {
+        if (StringUtils.hasText(stackTrace)) {
+            return TRACE_PREFIX + stackTrace;
+        } else {
+            return "";
+        }
     }
 }
