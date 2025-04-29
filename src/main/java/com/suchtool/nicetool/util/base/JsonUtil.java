@@ -131,4 +131,29 @@ public class JsonUtil {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * 判断 JsonNode 是否为空（空字符串、空对象、空数组等）
+     * @param node 节点
+     * @return 是否为空
+     */
+    public static boolean isEmpty(JsonNode node) {
+        if (node == null) {
+            return true;
+        }
+
+        if (node.isTextual()) {
+            return node.asText().isEmpty();
+        }
+
+        if (node.isObject()) {
+            return node.size() == 0;
+        }
+
+        if (node.isArray()) {
+            return node.size() == 0;
+        }
+
+        return false;
+    }
 }
