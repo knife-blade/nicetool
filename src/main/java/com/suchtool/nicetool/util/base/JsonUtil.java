@@ -142,10 +142,6 @@ public class JsonUtil {
             return true;
         }
 
-        if (node.isTextual()) {
-            return node.asText().isEmpty();
-        }
-
         if (node.isObject()) {
             return node.size() == 0;
         }
@@ -154,6 +150,6 @@ public class JsonUtil {
             return node.size() == 0;
         }
 
-        return false;
+        return node.asText().isEmpty();
     }
 }
