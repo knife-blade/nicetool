@@ -42,12 +42,11 @@ public class PropertyUtil {
     /**
      * 把对象中的 String 类型的空字段，转换为指定字符串
      *
-     * @param <T> 待转化对象类型
-     * @param cls 待转化对象
+     * @param obj 待转化对象
      * @param str 目标字符串
      */
-    public static <T> void replaceBlankString(T cls, String str) {
-        Field[] fields = cls.getClass().getDeclaredFields();
+    public static void replaceBlankString(Object obj, String str) {
+        Field[] fields = obj.getClass().getDeclaredFields();
         if (fields == null || fields.length == 0) {
             return;
         }
@@ -55,9 +54,9 @@ public class PropertyUtil {
             if ("String".equals(field.getType().getSimpleName())) {
                 field.setAccessible(true);
                 try {
-                    String value = (String) field.get(cls);
+                    String value = (String) field.get(obj);
                     if (!StringUtils.hasText(value)) {
-                        field.set(cls, str);
+                        field.set(obj, str);
                     }
                 } catch (IllegalArgumentException | IllegalAccessException e) {
                     e.printStackTrace();
