@@ -26,7 +26,7 @@ public class WebStreamUtil {
      * @param outputFileName 输出的文件名
      */
     public static void responseAsStream(InputStream inputStream,
-                                        String outputFileName){
+                                        String outputFileName) {
         responseAsStream(inputStream, outputFileName, null);
     }
 
@@ -36,37 +36,56 @@ public class WebStreamUtil {
      *
      * @param inputStream    输入流
      * @param outputFileName 输出的文件名
-     * @param responseHeader 响应头
+     * @param responseHeader 响应头（追加响应头）
      */
     public static void responseAsStream(InputStream inputStream,
                                         String outputFileName,
                                         MultiValueMap<String, String> responseHeader) {
+        responseAsStream(inputStream, outputFileName, responseHeader, false);
+    }
+
+    /**
+     * 使用流所为响应。指定文件名和响应头
+     *
+     * @param inputStream           输入流
+     * @param outputFileName        输出的文件名
+     * @param responseHeader        响应头
+     * @param replaceResponseHeader 是否完全替换响应头。true：完全替换。false：添加
+     */
+    public static void responseAsStream(InputStream inputStream,
+                                        String outputFileName,
+                                        MultiValueMap<String, String> responseHeader,
+                                        boolean replaceResponseHeader) {
         ServletRequestAttributes servletRequestAttributes =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         Assert.notNull(servletRequestAttributes, "RequestAttributes不能为null");
         HttpServletResponse response = servletRequestAttributes.getResponse();
         Assert.notNull(response, "Response不能为null");
 
-        String fileName = null;
-        try {
-            fileName = URLEncoder.encode(outputFileName, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+        if (StringUtils.hasText(outputFileName)) {
+            String fileName = null;
+            try {
+                fileName = URLEncoder.encode(outputFileName, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
+
+            // 通知浏览器以附件的形式下载处理，设置返回头要注意文件名有中文
+            response.setHeader("Content-disposition", "attachment;filename=" + fileName);
         }
 
-        String originHeaderContentDisposition = response.getHeader("Content-disposition");
-        String originContentType = response.getContentType();
-        String originCharacterEncoding = response.getCharacterEncoding();
-
-        // 通知浏览器以附件的形式下载处理，设置返回头要注意文件名有中文
-        response.setHeader("Content-disposition", "attachment;filename=" + fileName);
-        response.setContentType("multipart/form-data");
-        response.setCharacterEncoding("utf-8");
-
+        if (replaceResponseHeader) {
+            response.reset();
+        }
         if (!CollectionUtils.isEmpty(responseHeader)) {
             appendResponseHeader(response, responseHeader);
         }
 
+        doResponseAsStream(inputStream, response);
+    }
+
+    private static void doResponseAsStream(InputStream inputStream,
+                                           HttpServletResponse response) {
         ServletOutputStream outputStream = null;
         try {
             outputStream = response.getOutputStream();
