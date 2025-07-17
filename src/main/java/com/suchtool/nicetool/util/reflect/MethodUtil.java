@@ -64,8 +64,8 @@ public class MethodUtil {
         return map;
     }
 
-    private static boolean requireParse(Collection<Class<?>> ignoreClassList,
-                                        Object arg) {
+    public static boolean requireParse(Collection<Class<?>> ignoreClassList,
+                                       Object arg) {
         boolean requireParse = true;
         if (!CollectionUtils.isEmpty(ignoreClassList)) {
             for (Class<?> aClass : ignoreClassList) {
