@@ -33,8 +33,8 @@ public class JsonUtil {
         // 反序列化：JSON字段中有Java对象中没有的字段时不报错
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        // 反序列化：不允许基本类型为null
-        //objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
+        // 反序列化：基本类型为null时不报错
+        objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
 
         // 序列化：序列化BigDecimal时不使用科学计数法输出
         objectMapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
