@@ -1,16 +1,13 @@
 package com.suchtool.nicetool.util.base;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
 import com.suchtool.nicetool.property.NiceToolProperty;
 import com.suchtool.nicetool.util.spring.ApplicationContextHolder;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,11 +33,14 @@ public class JsonUtil {
         // 反序列化：基本类型为null时不报错
         objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false);
 
+        // 序列化：非包装类型不报错
+        objectMapper.configure(SerializationFeature.FAIL_ON_UNWRAPPED_TYPE_IDENTIFIERS, false);
+
         // 序列化：序列化BigDecimal时不使用科学计数法输出
         objectMapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
 
-        // 序列化：Java对象为空的字段不拼接JSON
-        //objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        // 序列化：Java对象为null的字段不拼接JSON
+        // objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
     public static ObjectMapper getObjectMapper() {
